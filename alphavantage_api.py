@@ -8,7 +8,6 @@ I'll add features as I get time.
 import requests
 #For csv files
 import csv
-import sqlite_query
 #Needed for timer to not exceed free downloads
 import time
 #For file paths
@@ -18,7 +17,6 @@ import os
 
 #Replace /your/file/path.sqlite with the appropriate path
 save_to = '/your/file/path/'
-table_name = 'Stock_List'
 #Put your alphavantage api key here
 api_key = 'Your API Key'
 #needed for timer
@@ -37,6 +35,7 @@ apikey=
 outputsize=full
 """
 
+#Function that does everything, it has two arguments
 def get_ticker(save_to, stock_list):
     #counter is so if something happens you know where you are in your list and can resume at that location(manually)
     counter = 0
@@ -54,6 +53,7 @@ def get_ticker(save_to, stock_list):
             file = open('{}{}.csv'.format(save_to, each), 'w+')
             file.write(r.text)
             file.close()
+            #Actual timer that limits stock downloads/minute(up to 5/min are free)
             time.sleep(13 -((time.time() - start_time) % 13))
         else:
             print(r.raise_for_status)
